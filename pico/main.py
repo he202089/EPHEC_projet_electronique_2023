@@ -16,10 +16,15 @@ echo = Pin(1, Pin.IN)
 led_green = Pin(5, Pin.OUT)
 led_red = Pin(9, Pin.OUT)
 
-pin_one = Pin(10, Pin.OUT) # MSB
-pin_two = Pin(11, Pin.OUT)
-pin_three = Pin(18, Pin.OUT)
+pin_one = Pin(18, Pin.OUT) # MSB
+pin_two = Pin(10, Pin.OUT)
+pin_three = Pin(11, Pin.OUT)
 pin_four = Pin(17, Pin.OUT) # LSB
+
+dizainePin = Pin(14, Pin.OUT)
+unitePin = Pin(16, Pin.OUT)
+
+
 pin_list = [pin_one, pin_two, pin_three, pin_four]
 pin_dot = Pin(15, Pin.OUT)
 
@@ -49,24 +54,22 @@ def ultra():
    return distance
 
 def DecimalToResult(decimal):
-    int(decimal)
-    list_output=[0,0]
-    affichage = [0,0]
+    decimal = int(decimal)
+    list_output=[]
     while decimal > 0:
         list_output.append(decimal%10)
         decimal /= 10
         decimal = int(decimal)
-        
-    
-    affichage[0] = list_output[0]
-    affichage[1] = list_output[1]
-    
-    return affichage
-    
-        
- 
-    
 
+    list_output.reverse()
+    while len(list_output) < 2:
+        list_output.insert(0,0)
+    while(len(list_output) > 2):
+        list_output.pop(-1)
+    
+    return list_output
+        
+    
 def to_four_bits(binary):
     if len(binary) == 0:
         return '0000'
@@ -94,7 +97,7 @@ test_bin_unit = decimalToOutPut(9)
 def refresh(pint_list):
     for x in (pin_list):
         
-        x.value(0)
+        x.value(1)
     
 
 # LEDS
@@ -129,40 +132,81 @@ def check_leds():
             led_green.value(0)
 
 def main():
-    _thread.start_new_thread(check_leds, ())
+    #_thread.start_new_thread(check_leds, ())
     pass
 
-main()
-    
-# Boucle principale
-while 1:
-    DISTANCE = ultra()
+#main()
 
-    if DISTANCE >= 100:
-        DOT = True
 
-        
-    list_mesure = DecimalToResult(DISTANCE)
-    test_bin_diz = decimalToOutPut(list_mesure[0])
-
-    # Unité 
-    test_bin_unit = decimalToOutPut(list_mesure[1])
-   
-   
+def affichage():
     # Allumé dizaine
+    unitePin.value(1)
+    dizainePin.value(0)
     for i, x in enumerate(pin_list):
         if int(test_bin_diz[i]) == 1:
-            x.value(1)
+            x.value(0)
             
     if DOT:
-        pin_dot.value(0.05)  
+        pin_dot.value(0)  
    
     refresh(pin_list)
+    utime.sleep(1)
     pin_dot.value(0)
 
     # Allume unité
+    unitePin.value(0)
+    dizainePin.value(1)
     for i, x in enumerate(pin_list):
         if int(test_bin_unit[i]) == 1:
-            x.value(1)
+            x.value(0)
     
     refresh(pin_list)
+
+# Boucle principale
+while 1:
+    refresh(pin_list)
+    distance = ultra()
+
+    if distance >= 100:
+        DOT = True
+
+    list_mesure = DecimalToResult(distance)
+    # Dizaine
+    test_bin_diz = decimalToOutPut(list_mesure[0])
+    # Unité 
+    test_bin_unit = decimalToOutPut(list_mesure[1])
+   
+    newMesure = False
+    timeSpend = 0
+    #startAffichage = utime.ticks_us()
+    
+    unitePin.value(1)
+    dizainePin.value(0)
+    for i, x in enumerate(pin_list):
+        if int(test_bin_diz[i]) == 1:
+            x.value(0)
+            
+    if DOT:
+        pin_dot.value(0)  
+   
+    
+    utime.sleep(0.5)
+    pin_dot.value(0)
+
+    # Allume unité
+    unitePin.value(0)
+    dizainePin.value(1)
+    for i, x in enumerate(pin_list):
+        if int(test_bin_unit[i]) == 1:
+            x.value(0)
+    
+    utime.sleep(0.5)
+    #while not newMesure:
+#
+     #   affichage()
+
+        #timeIn = utime.ticks_us()
+        #timeSpend = timeIn - startAffichage
+
+        #if timeSpend > 1000000:
+            #newMesure = True
