@@ -7492,9 +7492,9 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <attribute name="NAME" x="219.71" y="118.3386" size="1.778" layer="95"/>
 <attribute name="VALUE" x="219.71" y="113.538" size="1.778" layer="96"/>
 </instance>
-<instance part="R25" gate="G$1" x="226.06" y="88.9" smashed="yes">
-<attribute name="NAME" x="222.25" y="90.3986" size="1.778" layer="95"/>
-<attribute name="VALUE" x="222.25" y="85.598" size="1.778" layer="96"/>
+<instance part="R25" gate="G$1" x="223.52" y="88.9" smashed="yes">
+<attribute name="NAME" x="219.71" y="90.3986" size="1.778" layer="95"/>
+<attribute name="VALUE" x="219.71" y="85.598" size="1.778" layer="96"/>
 </instance>
 </instances>
 <busses>
@@ -7919,13 +7919,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <pinref part="R24" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="N$34" class="0">
-<segment>
-<pinref part="DIS2" gate="M" pin="DP"/>
-<wire x1="218.44" y1="88.9" x2="220.98" y2="88.9" width="0.1524" layer="91"/>
-<pinref part="R25" gate="G$1" pin="1"/>
-</segment>
-</net>
 <net name="NC" class="0">
 <segment>
 <pinref part="U$1" gate="G$1" pin="20"/>
@@ -7934,8 +7927,14 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </segment>
 <segment>
 <pinref part="R25" gate="G$1" pin="2"/>
-<wire x1="231.14" y1="88.9" x2="236.22" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="228.6" y1="88.9" x2="236.22" y2="88.9" width="0.1524" layer="91"/>
 <label x="236.22" y="88.9" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="N$31" class="0">
+<segment>
+<pinref part="DIS2" gate="M" pin="DP"/>
+<pinref part="R25" gate="G$1" pin="1"/>
 </segment>
 </net>
 </nets>
