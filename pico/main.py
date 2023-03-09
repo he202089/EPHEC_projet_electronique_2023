@@ -1,5 +1,6 @@
 from machine import Pin
 import utime
+import _thread
 
 TOGGLE = True
 soundspeed = 0.0343
@@ -9,20 +10,18 @@ ALARM_OPERATOR = "<" # can be "<" or ">"
 DISTANCE = 0
 BLINK_DELAY = 0.5
 
-trigger = Pin(3, Pin.OUT)
-echo = Pin(2, Pin.IN)
+trigger = Pin(0, Pin.OUT)
+echo = Pin(1, Pin.IN)
 
-led_green = Pin(6, Pin.OUT)
-led_red = Pin(11, Pin.OUT)
+led_green = Pin(5, Pin.OUT)
+led_red = Pin(9, Pin.OUT)
 
-pin_one = Pin(32, Pin.OUT) # MSB
-pin_two = Pin(31, Pin.OUT)
-pin_three = Pin(26, Pin.OUT)
-pin_four = Pin(24, Pin.OUT) # LSB
+pin_one = Pin(10, Pin.OUT) # MSB
+pin_two = Pin(11, Pin.OUT)
+pin_three = Pin(18, Pin.OUT)
+pin_four = Pin(17, Pin.OUT) # LSB
 pin_list = [pin_one, pin_two, pin_three, pin_four]
-pin_dot = Pin(21, Pin.OUT)
-
-listLedBinaire = [Bin1,Bin2,Bin3,Bin4]
+pin_dot = Pin(15, Pin.OUT)
 
 
 def launchSound():
@@ -51,7 +50,7 @@ def ultra():
 
 def DecimalToResult(decimal):
     int(decimal)
-    list_output=[]
+    list_output=[0,0]
     affichage = [0,0]
     while decimal > 0:
         list_output.append(decimal%10)
@@ -95,66 +94,75 @@ test_bin_unit = decimalToOutPut(9)
 def refresh(pint_list):
     for x in (pin_list):
         
-         x.value(0)
+        x.value(0)
     
 
-# Boucle des LEDS
-while 1:
-    if ALARM_OPERATOR == "<":
-        if distance < ALARM_LIMIT:
-            if led_red.value == 0:
-                led_red.value(1)
+# LEDS
+def check_leds():
+    while True:
+        if ALARM_OPERATOR == "<":
+            if DISTANCE < ALARM_LIMIT:
+                if led_red.value == 0:
+                    led_red.value(1)
+                else:
+                    led_red.value(0)
+
+                led_green.value(0)
+                utime.sleep(BLINK_DELAY)
             else:
                 led_red.value(0)
+                led_green.value(1)
+        elif ALARM_OPERATOR == ">":
+            if DISTANCE > ALARM_LIMIT:
+                if led_red.value == 0:
+                    led_red.value(1)
+                else:
+                    led_red.value(0)
 
-            led_green.value(0)
-            time.sleep(BLINK_DELAY)
-        else:
-            led_red.value(0)
-            led_green.value(1)
-    elif ALARM_OPERATOR == ">":
-        if distance > ALARM_LIMIT:
-            if led_red.value == 0:
-                led_red.value(1)
+                led_green.value(0)
+                utime.sleep(BLINK_DELAY)
             else:
                 led_red.value(0)
-
-            led_green.value(0)
-            time.sleep(BLINK_DELAY)
+                led_green.value(1)
         else:
-            led_red.value(0)
-            led_green.value(1)
-    else:
-        led_red.value(1)
-        led_green.value(0)
+            led_red.value(1)
+            led_green.value(0)
+
+def main():
+    _thread.start_new_thread(check_leds, ())
+    pass
+
+main()
     
 # Boucle principale
 while 1:
-   DISTANCE = ultra()
+    DISTANCE = ultra()
 
-   if DISTANCE >= 100:
-    DOT = True
-   list_mesure = DecimalToResult(DISTANCE)
-   test_bin_diz = decimalToOutPut(list_mesure[0])
+    if DISTANCE >= 100:
+        DOT = True
 
-   #unité 
-   test_bin_unit = decimalToOutPut(list_mesure[1])
+        
+    list_mesure = DecimalToResult(DISTANCE)
+    test_bin_diz = decimalToOutPut(list_mesure[0])
+
+    # Unité 
+    test_bin_unit = decimalToOutPut(list_mesure[1])
    
    
-   #Allumé dizaine
-   for i, x in enumerate(pin_list):
+    # Allumé dizaine
+    for i, x in enumerate(pin_list):
         if int(test_bin_diz[i]) == 1:
             x.value(1)
             
-   if DOT:
-    pin_dot.value(1)  
+    if DOT:
+        pin_dot.value(0.05)  
    
-   utime.sleep(0.05)
-   refresh(pin_list)
-   pin_dot.value(0)
+    refresh(pin_list)
+    pin_dot.value(0)
 
-   #Allume unité
-   for i, x in enumerate(pin_list):
+    # Allume unité
+    for i, x in enumerate(pin_list):
         if int(test_bin_unit[i]) == 1:
             x.value(1)
+    
     refresh(pin_list)
