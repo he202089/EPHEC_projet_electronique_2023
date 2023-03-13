@@ -7694,10 +7694,10 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <pinref part="DIS2" gate="M" pin="CA"/>
 <wire x1="223.52" y1="76.2" x2="223.52" y2="73.66" width="0.1524" layer="91"/>
 <wire x1="223.52" y1="73.66" x2="218.44" y2="73.66" width="0.1524" layer="91"/>
-<pinref part="T2" gate="G$1" pin="C"/>
-<wire x1="182.88" y1="68.58" x2="223.52" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="223.52" y1="68.58" x2="223.52" y2="73.66" width="0.1524" layer="91"/>
 <junction x="223.52" y="73.66"/>
+<pinref part="T2" gate="G$1" pin="E"/>
+<wire x1="182.88" y1="58.42" x2="223.52" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="223.52" y1="58.42" x2="223.52" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -7712,16 +7712,6 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <label x="144.78" y="91.44" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="T2" gate="G$1" pin="E"/>
-<wire x1="182.88" y1="58.42" x2="185.42" y2="55.88" width="0.1524" layer="91"/>
-<label x="185.42" y="55.88" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="T1" gate="G$1" pin="E"/>
-<wire x1="259.08" y1="99.06" x2="269.24" y2="93.98" width="0.1524" layer="91"/>
-<label x="269.24" y="93.98" size="1.778" layer="95"/>
-</segment>
-<segment>
 <label x="129.54" y="116.84" size="1.778" layer="95"/>
 <pinref part="U$1" gate="G$1" pin="40"/>
 <wire x1="116.84" y1="116.84" x2="129.54" y2="116.84" width="0.1524" layer="91"/>
@@ -7731,13 +7721,15 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="228.6" y1="88.9" x2="236.22" y2="88.9" width="0.1524" layer="91"/>
 <label x="236.22" y="88.9" size="1.778" layer="95"/>
 </segment>
-</net>
-<net name="N$30" class="0">
 <segment>
-<pinref part="R6" gate="G$1" pin="2"/>
-<pinref part="T2" gate="G$1" pin="B"/>
-<wire x1="160.02" y1="71.12" x2="170.18" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="170.18" y1="63.5" x2="177.8" y2="63.5" width="0.1524" layer="91"/>
+<pinref part="T2" gate="G$1" pin="C"/>
+<wire x1="182.88" y1="68.58" x2="187.96" y2="68.58" width="0.1524" layer="91"/>
+<label x="187.96" y="68.58" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="T1" gate="G$1" pin="C"/>
+<wire x1="259.08" y1="109.22" x2="259.08" y2="111.76" width="0.1524" layer="91"/>
+<label x="259.08" y="111.76" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="13A" class="0">
@@ -7838,10 +7830,10 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="220.98" y1="104.14" x2="220.98" y2="101.6" width="0.1524" layer="91"/>
 <pinref part="DIS3" gate="M" pin="CA"/>
 <wire x1="220.98" y1="101.6" x2="218.44" y2="101.6" width="0.1524" layer="91"/>
-<wire x1="220.98" y1="104.14" x2="220.98" y2="109.22" width="0.1524" layer="91"/>
-<junction x="220.98" y="104.14"/>
-<pinref part="T1" gate="G$1" pin="C"/>
-<wire x1="220.98" y1="109.22" x2="259.08" y2="109.22" width="0.1524" layer="91"/>
+<wire x1="220.98" y1="101.6" x2="220.98" y2="99.06" width="0.1524" layer="91"/>
+<junction x="220.98" y="101.6"/>
+<pinref part="T1" gate="G$1" pin="E"/>
+<wire x1="220.98" y1="99.06" x2="259.08" y2="99.06" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DOT" class="0">
@@ -7899,8 +7891,8 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 </segment>
 <segment>
 <pinref part="R23" gate="G$1" pin="1"/>
-<wire x1="243.84" y1="104.14" x2="241.3" y2="104.14" width="0.1524" layer="91"/>
-<label x="241.3" y="104.14" size="1.778" layer="95"/>
+<wire x1="243.84" y1="104.14" x2="238.76" y2="104.14" width="0.1524" layer="91"/>
+<label x="238.76" y="104.14" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$9" class="0">
@@ -7936,6 +7928,15 @@ Source: http://www.mouser.com/ds/2/392/products_18-2245.pdf</description>
 <wire x1="127" y1="71.12" x2="127" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="U$1" gate="G$1" pin="21"/>
 <wire x1="127" y1="68.58" x2="116.84" y2="68.58" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$30" class="0">
+<segment>
+<pinref part="R6" gate="G$1" pin="2"/>
+<wire x1="160.02" y1="71.12" x2="162.56" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="162.56" y1="71.12" x2="162.56" y2="63.5" width="0.1524" layer="91"/>
+<pinref part="T2" gate="G$1" pin="B"/>
+<wire x1="162.56" y1="63.5" x2="177.8" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
