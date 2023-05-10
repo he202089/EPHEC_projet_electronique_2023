@@ -17,9 +17,9 @@ led_green = Pin(5, Pin.OUT)
 led_red = Pin(9, Pin.OUT)
 
 pin_one = Pin(18, Pin.OUT) # MSB
-pin_two = Pin(10, Pin.OUT)
-pin_three = Pin(11, Pin.OUT)
-pin_four = Pin(17, Pin.OUT) # LSB
+pin_two = Pin(27, Pin.OUT)
+pin_three = Pin(26, Pin.OUT)
+pin_four = Pin(19, Pin.OUT) # LSB
 
 dizainePin = Pin(14, Pin.OUT)
 unitePin = Pin(16, Pin.OUT)
@@ -166,6 +166,7 @@ def affichage():
 while 1:
     refresh(pin_list)
     distance = ultra()
+    pin_one.value(1)
 
     if distance >= 100:
         DOT = True
