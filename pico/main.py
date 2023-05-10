@@ -22,7 +22,7 @@ pin_three = Pin(26, Pin.OUT)
 pin_four = Pin(19, Pin.OUT) # LSB
 
 dizainePin = Pin(14, Pin.OUT)
-unitePin = Pin(16, Pin.OUT)
+unitePin = Pin(17, Pin.OUT)
 
 
 pin_list = [pin_one, pin_two, pin_three, pin_four]
@@ -166,7 +166,7 @@ def affichage():
 while 1:
     refresh(pin_list)
     distance = ultra()
-    pin_one.value(1)
+    
 
     if distance >= 100:
         DOT = True
