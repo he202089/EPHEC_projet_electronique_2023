@@ -1,14 +1,12 @@
 from machine import Pin
 import utime
-import _thread
 
-TOGGLE = True
 soundspeed = 0.0343
 DOT = False
 ALARM_LIMIT = 20
 ALARM_OPERATOR = "<" # can be "<" or ">"
-DISTANCE = 0
-BLINK_DELAY = 0.5
+BLINK_DELAY = 0.01
+
 
 trigger = Pin(0, Pin.OUT)
 echo = Pin(1, Pin.IN)
@@ -21,14 +19,12 @@ pin_two = Pin(26, Pin.OUT)
 pin_three = Pin(27, Pin.OUT)
 pin_four = Pin(18, Pin.OUT) # LSB
 
-
-
 dizainePin = Pin(14, Pin.OUT)
 unitePin = Pin(16, Pin.OUT)
-
+pin_dot = Pin(15, Pin.OUT)
 
 pin_list = [pin_one, pin_two, pin_three, pin_four]
-pin_dot = Pin(15, Pin.OUT)
+
 
 def reset_pin():
     pin_one.value(0)
@@ -51,10 +47,8 @@ def ultra():
    launchSound()
 
    while echo.value() == 0:
-       """ Track the time when we launch the trigger"""
        signaloff = utime.ticks_us()
    while echo.value() == 1:
-       """ Track the time when the trigger is back"""
        signalon = utime.ticks_us()
 
    timepassed = signalon - signaloff
@@ -90,14 +84,12 @@ def to_four_bits(binary):
     else:
         return binary
 
-def decimalToOutPut(DECIMAL):
+def decimalToBin(DECIMAL):
     BINARY = to_four_bits(bin(DECIMAL).split('b')[1])
     BINARY_LIST = str(BINARY)
 
-    return (BINARY_LIST)
+    return BINARY_LIST
 
-
-# LEDS
 def check_leds(distance):
     if ALARM_OPERATOR == "<":
         if distance < ALARM_LIMIT:
@@ -115,13 +107,12 @@ def check_leds(distance):
             led_green.value(0)
 
 
-
-reset_pin()
 # Boucle principale
 while 1:
     distance = ultra()
-
     check_leds(distance)
+
+    
     if distance >= 100:
         DOT = True
     elif distance < 100:
@@ -129,9 +120,9 @@ while 1:
 
     list_mesure = DecimalToResult(distance)
     # Dizaine
-    bin_diz = decimalToOutPut(list_mesure[0])
+    bin_diz = decimalToBin(list_mesure[0])
     # Unité 
-    bin_unit = decimalToOutPut(list_mesure[1])
+    bin_unit = decimalToBin(list_mesure[1])
 
     # Allume Dizaine
     reset_pin()
@@ -144,19 +135,17 @@ while 1:
         if int(bin_diz[i]) == 1:
             x.value(1)
     
-    utime.sleep(0.01)
-    reset_pin()
+    utime.sleep(BLINK_DELAY)
+    
 
     # Allume unité
+    reset_pin()
     dizainePin.value(0)
     unitePin.value(1)
-    print(bin_unit,"ici")
     for i, x in enumerate(pin_list):
         if int(bin_unit[i]) == 1:
             x.value(1)
-    
-    pin_dot.value(0)
 
-    utime.sleep(0.01)
+    utime.sleep(BLINK_DELAY)
     
 
