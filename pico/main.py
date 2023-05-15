@@ -1,13 +1,27 @@
-from machine import Pin
+from machine import Pin, UART
 import utime
+
+
 
 soundspeed = 0.0343
 DOT = False
-ALARM_LIMIT = 20
+
 ALARM_OPERATOR = "<" # can be "<" or ">"
 BLINK_DELAY = 0.01
 
+ALARM_LIMIT = 20
+uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
 
+
+def process_serial_commands():
+    #Doesn't work
+    new_limit = ALARM_LIMIT
+    if uart.any():
+        command = uart.read()
+        if command.startswith("L"):
+            new_limit = int(command[1:])
+    return new_limit
+            
 trigger = Pin(0, Pin.OUT)
 echo = Pin(1, Pin.IN)
 
@@ -45,6 +59,8 @@ def launchSound():
             
 def ultra():
    launchSound()
+   signaloff = 0
+   signalon = 0
 
    while echo.value() == 0:
        signaloff = utime.ticks_us()
@@ -53,7 +69,7 @@ def ultra():
 
    timepassed = signalon - signaloff
    distance = (timepassed * soundspeed) / 2
-   print("L'objet est perçu à ",distance,"cm")
+   print("L'objet est perçu à ",distance,"cm", "la limite de l'alarm est à", ALARM_LIMIT)
    return distance
 
 def DecimalToResult(decimal):
@@ -147,5 +163,7 @@ while 1:
             x.value(1)
 
     utime.sleep(BLINK_DELAY)
+    ALARM_LIMIT = process_serial_commands()
+
     
 
