@@ -7,7 +7,7 @@ DOT = False
 ALARM_OPERATOR = "<" # can be "<" or ">"
 BLINK_DELAY = 0.01
 
-ALARM_LIMIT = 10
+ALARM_LIMIT = 25
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
 
 def process_serial_commands():
@@ -65,9 +65,12 @@ def ultra():
    timepassed = signalon - signaloff
    distance = (timepassed * soundspeed) / 2
    if distance < 400:
-       print("✅ L'objet est perçu à", distance ,"cm et la limite de l'alarme est à", ALARM_LIMIT)
+       if distance > ALARM_LIMIT:
+           print("🔴 OFF: L'objet est perçu à", distance ,"cm")
+       else:
+           print("🟢 ON: L'objet est perçu à", distance ,"cm")
    else:
-       print("❎ L'objet est trop loin, la distance ne peut donc pas être calculée")
+       print("❎ ERROR: L'objet est trop loin, la distance ne peut donc pas être calculée")
    return distance
 
 def DecimalToResult(decimal):
@@ -158,4 +161,4 @@ while 1:
 
     utime.sleep(BLINK_DELAY)
     ALARM_LIMIT = process_serial_commands()
-
+_
