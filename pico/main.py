@@ -1,17 +1,14 @@
 from machine import Pin, UART
 import utime
 
-
-
 soundspeed = 0.0343
 DOT = False
 
 ALARM_OPERATOR = "<" # can be "<" or ">"
 BLINK_DELAY = 0.01
 
-ALARM_LIMIT = 20
+ALARM_LIMIT = 10
 uart = UART(0, baudrate=9600, tx=Pin(0), rx=Pin(1))
-
 
 def process_serial_commands():
     #Doesn't work
@@ -39,7 +36,6 @@ pin_dot = Pin(15, Pin.OUT)
 
 pin_list = [pin_one, pin_two, pin_three, pin_four]
 
-
 def reset_pin():
     pin_one.value(0)
     pin_two.value(0)
@@ -55,7 +51,6 @@ def launchSound():
     trigger.high()
     utime.sleep_us(5)
     trigger.low()
-
             
 def ultra():
    launchSound()
@@ -69,7 +64,10 @@ def ultra():
 
    timepassed = signalon - signaloff
    distance = (timepassed * soundspeed) / 2
-   print("L'objet est perçu à ",distance,"cm", "la limite de l'alarm est à", ALARM_LIMIT)
+   if distance < 400:
+       print("✅ L'objet est perçu à", distance ,"cm et la limite de l'alarme est à", ALARM_LIMIT)
+   else:
+       print("❎ L'objet est trop loin, la distance ne peut donc pas être calculée")
    return distance
 
 def DecimalToResult(decimal):
@@ -86,8 +84,7 @@ def DecimalToResult(decimal):
     while(len(list_output) > 2):
         list_output.pop(-1)
     return list_output
-        
-    
+
 def to_four_bits(binary):
     if len(binary) == 0:
         return '0000'
@@ -122,13 +119,11 @@ def check_leds(distance):
             led_red.value(1)
             led_green.value(0)
 
-
 # Boucle principale
 while 1:
     distance = ultra()
     check_leds(distance)
 
-    
     if distance >= 100:
         DOT = True
     elif distance < 100:
@@ -152,7 +147,6 @@ while 1:
             x.value(1)
     
     utime.sleep(BLINK_DELAY)
-    
 
     # Allume unité
     reset_pin()
@@ -164,6 +158,4 @@ while 1:
 
     utime.sleep(BLINK_DELAY)
     ALARM_LIMIT = process_serial_commands()
-
-    
 
